@@ -1,0 +1,15 @@
+Package: nlmeYextra
+Type: Package
+Title: Functions to add functionality to nlme
+Version: 0.1.1.9000
+Date: 2015-06-04
+Author: Georges Monette and others
+Maintainer: Georges Monette <georges@yorku.ca>
+Description: Some plans include:
+  - pdMat classes for independent random effects
+  - varClasses for additional variance 
+License: GPL
+Imports: nlme
+Suggests: knitr,
+    testthat
+VignetteBuilder: knitr
