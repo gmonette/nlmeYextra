@@ -1,8 +1,9 @@
-#' Factor for pdInd
-#' 
-#' Originally inteded to produce an independent parametrization it actually produced a conditionally independent parametrization REFLECTING A SERIOUS MISUNDERSTANDING of what it is that is actually parametrized.  It seems to be Sigma inverse but I don't see how that jives with other stuff.
+#' Factor for pdCInd
 #'
-#' All that follows in the way of documentation is wrong.
+#' This whole file seems wrong and creates method that ensures
+#' conditional independence!
+#' 
+#' The entire documentation needs to be changed.
 #' 
 #' Returns a factor for a 'left' log-Cholesky object for positive-definite variance matrix with zero covariances except in the first row and column. i.e. 
 #' $$
@@ -10,14 +11,13 @@
 #' $$
 #' with $L$ a lower-triangular matrix.
 #' 
-#' @param object a pdInd object representing a positive-definite variance matrix with covariances in the first row and column but zero covariances elsewhere. 
+#' @param object a pdCInd object representing a positive-definite variance matrix with covariances in the first row and column but zero covariances elsewhere. 
 #' @return the columns of a lower triangular Choleski factor of the positive-definite matrix as a vector. 
 #' @examples
-#' mat <- pdInd(diag(1:4))
+#' mat <- pdCInd(diag(1:4))
 #' pdFactor(mat)
-pdFactor.pdInd <-  
+pdFactor.pdCInd <-  
 function (object) {
-  # Unchanged
   # Note that pdMatrix.Symm uses pdFactor
   Ncol <- (length(object) + 1)/2
   ret <- matrix(0, Ncol,Ncol)
@@ -28,96 +28,86 @@ function (object) {
 
 #' Positive-Definite Matrix With Zero Covariances Between Predictor Random Effects
 #' 
-#' This function is a constructor for the \code{pdInd} class, representing a positive-definite matrix with zero covariances except possibly in the first row and column. If the matrix associated with \code{object} is of dimension $n$, it is represented by $n + (n-1)$ unrestricted parameters representing a lower-triangular log-Cholesky decomposition. The first $n$ parameters are the logs of the diagonal elements of the matrix and the last $n-1$ components are the $n-1$ remaining elements of the lower-triangular decomposition corresponding the to the possibly non-zero covariances in the first row.
+#' This function is a constructor for the \code{pdCInd} class, representing a positive-definite matrix with zero covariances except possibly in the first row and column. If the matrix associated with \code{object} is of dimension $n$, it is represented by $n + (n-1)$ unrestricted parameters representing a lower-triangular log-Cholesky decomposition. The first $n$ parameters are the logs of the diagonal elements of the matrix and the last $n-1$ components are the $n-1$ remaining elements of the lower-triangular decomposition corresponding the to the possibly non-zero covariances in the first row.
 #' @export
 #' 
-pdInd <-
+pdCInd <-
   function (value = numeric(0), form = NULL, nam = NULL, data = sys.parent()) 
 {
-  # unchanged  
  object <- numeric(0)
- class(object) <- c("pdInd", "pdMat")
+ class(object) <- c("pdCInd", "pdMat")
  pdConstruct(object, value, form, nam, data)
 }
 
-#' Construct pdInd object
+#' Construct pdCInd object
 #' 
-#' This function is a constructor for a pdInd object.
+#' This function is a constructor for a pdCInd object.
 #' 
-#' @param object an object inheriting from the class \code{pdInd}, representing a positive definite matrix with zero covariances except in the first row and column.
+#' @param object an object inheriting from the class \code{pdCInd}, representing a positive definite matrix with zero covariances except in the first row and column.
 #' @param value and option initialization value, which can be any of the following ...
 #' @param form an optional one-sided linear formula specifying the row/column names for the matrix represented by \code{object}.
 #' @param nam and optional vector of character strings specifying the row/column names for the matrix represented by \code{object}.
 #' @param data and optional data frame i which to evaluate the variables names in \code{value} and \code{form}. ...
 #' @export
-pdConstruct.pdInd <-
+pdConstruct.pdCInd <-
   function (object, value = numeric(0), form = formula(object), 
          nam = Names(object), data = sys.parent(), ...) 
 {
-    # START MAKING CHANGES HERE
     # note that pdConstruct.pdMat return an upper-triangular R factor, i.e. chol(value)
   val <- nlme:::pdConstruct.pdMat(object, value, form, nam, data)
   if (length(val) == 0) {
-    class(val) <- c("pdInd", "pdMat")
+    class(val) <- c("pdCInd", "pdMat")
     return(val)
   }
   isRmat <- function(x) all( x[row(x) > col(x)] == 0)
   if (is.matrix(val)) {
     if( isRmat(val) ){
         # extract the L parameters 
-# was:       L <- R2L(val)
-      # was:       value <- c(log(diag(L)), L[row(L)>1 & col(L)==1])
-      value <- c(log(diag(val)), val[col(val)>1 & row(val)==1])
+        L <- R2L(val)
+        value <- c(log(diag(L)), L[row(L)>1 & col(L)==1])
     } else stop("matrix should be an upper triangular matrix")
     attributes(value) <- 
       attributes(val)[names(attributes(val)) != "dim"]
-    class(value) <- c("pdInd", "pdMat")
+    class(value) <- c("pdCInd", "pdMat")
     attr(value,"invert") <- FALSE
     return(value)
   }
   Ncol <- (length(val) + 1)/2
   if (length(val) != 2*round(Ncol) - 1) {
-    stop(gettextf("an object of length %d does not match a pdInd factor (diagonal + covariances with intercept", 
+    stop(gettextf("an object of length %d does not match a pdCInd factor (diagonal + covariances with intercept", 
                   length(val)), domain = NA)
   }
-  class(val) <- c("pdInd", "pdMat")
+  class(val) <- c("pdCInd", "pdMat")
   val
 }
 
-#' Factor of a pdInd object.
+#' Factor of a pdCInd object.
 #' 
-#' Function to compute the upper triangular factor of a pdInd object.
+#' Function to compute the upper triangular factor of a pdCInd object.
 #' 
-#' @param object a 'pdInd' object from which the right-triangular factor of the variance matrix it represents will be extracted
+#' @param object a 'pdCInd' object from which the right-triangular factor of the variance matrix it represents will be extracted
 #' @return the full right-triangular factor, including zeros in the lower triangle, is returned as a vector in column order     
 #' @export
-pdFactor.pdInd <- 
+pdFactor.pdCInd <- 
 function (object) 
 {
   invert <- attr(object,"invert")
   object <- as.vector(object)
   Ncol <- round( (length(object) +1)/2)
-# was:
-#   L <- matrix(0,Ncol,Ncol)
-#   diag(L) <- exp( object[1:Ncol])
-#   if ( Ncol > 1 ) L[row(L)>1 & col(L)==1] <- 
-#     object[(Ncol+1):length(object)]
-#   if(invert) c(t(solve(L))) else c(L2R(L)) 
-  
-  R <- matrix(0,Ncol,Ncol)
-  diag(R) <- exp( object[1:Ncol])
-  if ( Ncol > 1 ) R[col(R)>1 & row(R)==1] <- 
-    object[(Ncol+1):length(object)]
-  if(invert) c(t(solve(R2L(R)))) else R 
+  L <- matrix(0,Ncol,Ncol)
+  diag(L) <- exp( object[1:Ncol])
+  if ( Ncol > 1 ) L[row(L)>1 & col(L)==1] <- 
+      object[(Ncol+1):length(object)]
+  if(invert) c(t(solve(L))) else c(L2R(L)) 
 }
-#' pdMatrix method for pdInd objects
+#' pdMatrix method for pdCInd objects
 #' 
-#' This function is the pdMatrix method for pdInd objects
+#' This function is the pdMatrix method for pdCInd objects
 #' 
-#' @param object a pdInd object
+#' @param object a pdCInd object
 #' @param factor should an upper-triangular factor be returned of the variance matrix
 #' @return a variance matrix or it upper-triangular factor.
-pdMatrix.pdInd <-
+pdMatrix.pdCInd <-
 function (object, factor = FALSE) 
 {
   if (!isInitialized(object)) {
@@ -130,14 +120,14 @@ function (object, factor = FALSE)
   attr(value, "logDet") <- 2*sum(ob[1:Ncol])
   if (factor) value else  crossprod(value)
 }
-#' solve method for pdInd objects.
+#' solve method for pdCInd objects.
 #' 
-#' This produces a pdInd object corresponding to the inverse of its argument.
+#' This produces a pdCInd object corresponding to the inverse of its argument.
 #' 
-#' @param a the pdInd object to invert.
+#' @param a the pdCInd object to invert.
 #' @param b is unused but copied from \code{solve.pdLogChol}.
-#' @return a pdInd object corresponding to the matrix inverse of \code{a}.
-solve.pdInd <-
+#' @return a pdCInd object corresponding to the matrix inverse of \code{a}.
+solve.pdCInd <-
 function (a, b, ...) 
   {
    if (!isInitialized(a)) {
@@ -165,7 +155,7 @@ if(TESTS) {
   V[2:4,1] <- 1:3
   V
   eigen(V)  # check that it's pd
-  f <- pdInd(V)
+  f <- pdCInd(V)
   f
   max( abs(pdMatrix(f)-V)) < 10*.Machine$double.eps
   
@@ -200,30 +190,56 @@ fit1 <- lme(mathach ~ ses + sex, hs,
 fit2 <- lme(mathach ~ ses + sex, hs,
             random = list( school = pdSymm( ~ 1 + ses + sex)),
             control = list(msVerbose=T,returnObject=T))
+
+# logCholesky
 fit3 <- lme(mathach ~ ses + sex, hs,
             random = list( school = pdLogChol( ~ 1 + ses + sex)),
-            control = list(msVerbose=T,returnObject=T))
-fit4 <- lme(mathach ~ ses + sex, hs,
-            random = list( school = pdInd( ~ 1 + ses + sex)),
-            control = list(msVerbose=T,returnObject=T,msMaxIter=1000))
-summary(fit4)
-summary(fit2)
-ff4 <- (fit4$modelStruct$reStruct$school)
+            control = list(msVerbose=T,returnObject=T, msMaxIter=1000))
+ff3 <- fit3$modelStruct$reStruct$school
+summary(ff3)
+AIC(fit3)
 
+fit4 <- lme(mathach ~ ses + sex, hs,
+            random = list( school = pdCInd( ~ 1 + ses + sex)),
+            control = list(msVerbose=T,returnObject=T,msMaxIter=1000))
+ff4 <- (fit4$modelStruct$reStruct$school)
+summary(ff4)
+AIC(fit4)
+AIC(fit3)
+VarCorr(fit4)
+vcov(fit4)
+v4 <- getVarCov(fit4)
+eigen(v4)
+condvar <- function(V, vind, cind) {
+  mvar <- V[vind,vind, drop=FALSE]
+  cov <- V[vind,cind, drop = FALSE]
+  varc <- V[cind,cind, drop = FALSE]
+  mvar - cov %*% solve(varc) %*% t(cov)
+}
+v4
+condvar(v4, 2:3, 1)
 summary(solve(ff))
 
-ff3 <- fit3$modelStruct$reStruct$school
 ff2 <- fit2$modelStruct$reStruct$school
 summary(ff3)
 summary(solve(ff3))
 summary(ff3)
 summary(ff4)
-AIC(fit3)
 AIC(fit4)
 AIC(fit2)
+AIC(fit3)
+getVarCov(fit2)
+ff2 %>% eigen
+ff2  %>% as.vector
+
+getVarCov(fit3)
+ff3 %>% eigen
+ff3 %>% as.vector
 AIC(fit1)
 
 unclass(ff2)
 unclass(ff3)
+
+
 
 }
