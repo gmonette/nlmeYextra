@@ -12,6 +12,175 @@ vignette: >
 library(magrittr)
 
 ```
+## Triangular factorizations
+
+\[\begin{gathered}
+  {\left[ {\begin{array}{*{20}{c}}
+  {{A_{00}}}&0&0&0 \\ 
+  {{A_{10}}}&{{A_{11}}}&0&0 \\ 
+  {{A_{20}}}&{{A_{21}}}&{{A_{22}}}&0 \\ 
+  {{A_{30}}}&{{A_{31}}}&{{A_{32}}}&{{A_{33}}} 
+\end{array}} \right]^\prime }\left[ {\begin{array}{*{20}{c}}
+  {{A_{00}}}&0&0&0 \\ 
+  {{A_{10}}}&{{A_{11}}}&0&0 \\ 
+  {{A_{20}}}&{{A_{21}}}&{{A_{22}}}&0 \\ 
+  {{A_{30}}}&{{A_{31}}}&{{A_{32}}}&{{A_{33}}} 
+\end{array}} \right] = {\left[ {\begin{array}{*{20}{c}}
+  {{{A'}_{00}}}&{{{A'}_{10}}}&{{{A'}_{20}}}&{{{A'}_{30}}} \\ 
+  0&{{{A'}_{11}}}&{{{A'}_{21}}}&{{{A'}_{31}}} \\ 
+  0&0&{{{A'}_{22}}}&{{{A'}_{32}}} \\ 
+  0&0&0&{{{A'}_{33}}} 
+\end{array}} \right]^\prime }\left[ {\begin{array}{*{20}{c}}
+  {{A_{00}}}&0&0&0 \\ 
+  {{A_{10}}}&{{A_{11}}}&0&0 \\ 
+  {{A_{20}}}&{{A_{21}}}&{{A_{22}}}&0 \\ 
+  {{A_{30}}}&{{A_{31}}}&{{A_{32}}}&{{A_{33}}} 
+\end{array}} \right] \hfill \\
+   = \left[ {\begin{array}{*{20}{c}}
+  {{{A'}_{00}}{A_{00}} + {{A'}_{10}}{A_{10}} + {{A'}_{20}}{A_{20}} + {{A'}_{30}}{A_{30}}}&{}&{}&{} \\ 
+  {{{A'}_{11}}{A_{10}} + {{A'}_{21}}{A_{20}} + {{A'}_{31}}{A_{30}}}&{{{A'}_{11}}{A_{11}} + {{A'}_{21}}{A_{21}} + {{A'}_{31}}{A_{31}}}&{}&{} \\ 
+  {{{A'}_{22}}{A_{20}} + {{A'}_{32}}{A_{30}}}&{{{A'}_{22}}{A_{21}} + {{A'}_{32}}{A_{31}}}&{{{A'}_{22}}{A_{22}} + {{A'}_{32}}{A_{32}}}&{} \\ 
+  {{{A'}_{33}}{A_{30}}}&{{{A'}_{33}}{A_{31}}}&{{{A'}_{33}}{A_{32}}}&{{{A'}_{33}}{A_{33}}} 
+\end{array}} \right] \hfill \\ 
+\end{gathered} \]
+
+\[\begin{gathered}
+  {\left[ {\begin{array}{*{20}{c}}
+  {{A_{00}}}&0&0&0 \\ 
+  {{A_{10}}}&{{A_{11}}}&0&0 \\ 
+  {{A_{20}}}&{{A_{21}}}&{{A_{22}}}&0 \\ 
+  {{A_{30}}}&{{A_{31}}}&{{0_{32}}}&{{A_{33}}} 
+\end{array}} \right]^\prime }\left[ {\begin{array}{*{20}{c}}
+  {{A_{00}}}&0&0&0 \\ 
+  {{A_{10}}}&{{A_{11}}}&0&0 \\ 
+  {{A_{20}}}&{{A_{21}}}&{{A_{22}}}&0 \\ 
+  {{A_{30}}}&{{A_{31}}}&{{0_{32}}}&{{A_{33}}} 
+\end{array}} \right] = {\left[ {\begin{array}{*{20}{c}}
+  {{{A'}_{00}}}&{{{A'}_{10}}}&{{{A'}_{20}}}&{{{A'}_{30}}} \\ 
+  0&{{{A'}_{11}}}&{{{A'}_{21}}}&{{{A'}_{31}}} \\ 
+  0&0&{{{A'}_{22}}}&{{{0'}_{32}}} \\ 
+  0&0&0&{{{A'}_{33}}} 
+\end{array}} \right]^\prime }\left[ {\begin{array}{*{20}{c}}
+  {{A_{00}}}&0&0&0 \\ 
+  {{A_{10}}}&{{A_{11}}}&0&0 \\ 
+  {{A_{20}}}&{{A_{21}}}&{{A_{22}}}&0 \\ 
+  {{A_{30}}}&{{A_{31}}}&{{0_{32}}}&{{A_{33}}} 
+\end{array}} \right] \hfill \\
+   = \left[ {\begin{array}{*{20}{c}}
+  {{{A'}_{00}}{A_{00}} + {{A'}_{10}}{A_{10}} + {{A'}_{20}}{A_{20}} + {{A'}_{30}}{A_{30}}}&{}&{}&{} \\ 
+  {{{A'}_{11}}{A_{10}} + {{A'}_{21}}{A_{20}} + {{A'}_{31}}{A_{30}}}&{{{A'}_{11}}{A_{11}} + {{A'}_{21}}{A_{21}} + {{A'}_{31}}{A_{31}}}&{}&{} \\ 
+  {{{A'}_{22}}{A_{20}} + {{0'}_{32}}{A_{30}}}&{{{A'}_{22}}{A_{21}} + {{0'}_{32}}{A_{31}}}&{{{A'}_{22}}{A_{22}} + {{0'}_{32}}{0_{32}}}&{} \\ 
+  {{{A'}_{33}}{A_{30}}}&{{{A'}_{33}}{A_{31}}}&{{{A'}_{33}}{0_{32}}}&{{{A'}_{33}}{A_{33}}} 
+\end{array}} \right] \hfill \\ 
+\end{gathered} \]
+
+
+\[\begin{gathered}
+  {\left[ {\begin{array}{*{20}{c}}
+  {{A_{00}}}&0&0&0 \\ 
+  {{A_{10}}}&{{A_{11}}}&0&0 \\ 
+  {{A_{20}}}&{{0_{21}}}&{{A_{22}}}&0 \\ 
+  {{A_{30}}}&{{A_{31}}}&{{0_{32}}}&{{A_{33}}} 
+\end{array}} \right]^\prime }\left[ {\begin{array}{*{20}{c}}
+  {{A_{00}}}&0&0&0 \\ 
+  {{A_{10}}}&{{A_{11}}}&0&0 \\ 
+  {{A_{20}}}&{{0_{21}}}&{{A_{22}}}&0 \\ 
+  {{A_{30}}}&{{A_{31}}}&{{0_{32}}}&{{A_{33}}} 
+\end{array}} \right] = {\left[ {\begin{array}{*{20}{c}}
+  {{{A'}_{00}}}&{{{A'}_{10}}}&{{{A'}_{20}}}&{{{A'}_{30}}} \\ 
+  0&{{{A'}_{11}}}&{{{0'}_{21}}}&{{{A'}_{31}}} \\ 
+  0&0&{{{A'}_{22}}}&{{{0'}_{32}}} \\ 
+  0&0&0&{{{A'}_{33}}} 
+\end{array}} \right]^\prime }\left[ {\begin{array}{*{20}{c}}
+  {{A_{00}}}&0&0&0 \\ 
+  {{A_{10}}}&{{A_{11}}}&0&0 \\ 
+  {{A_{20}}}&{{0_{21}}}&{{A_{22}}}&0 \\ 
+  {{A_{30}}}&{{A_{31}}}&{{0_{32}}}&{{A_{33}}} 
+\end{array}} \right] \hfill \\
+   = \left[ {\begin{array}{*{20}{c}}
+  {{{A'}_{00}}{A_{00}} + {{A'}_{10}}{A_{10}} + {{A'}_{20}}{A_{20}} + {{A'}_{30}}{A_{30}}}&{}&{}&{} \\ 
+  {{{A'}_{11}}{A_{10}} + {{0'}_{21}}{A_{20}} + {{A'}_{31}}{A_{30}}}&{{{A'}_{11}}{A_{11}} + {{0'}_{21}}{0_{21}} + {{A'}_{31}}{A_{31}}}&{}&{} \\ 
+  {{{A'}_{22}}{A_{20}} + {{0'}_{32}}{A_{30}}}&{{{A'}_{22}}{0_{21}} + {{0'}_{32}}{A_{31}}}&{{{A'}_{22}}{A_{22}} + {{0'}_{32}}{0_{32}}}&{} \\ 
+  {{{A'}_{33}}{A_{30}}}&{{{A'}_{33}}{A_{31}}}&{{{A'}_{33}}{0_{32}}}&{{{A'}_{33}}{A_{33}}} 
+\end{array}} \right] \hfill \\ 
+\end{gathered} \]
+
+
+\[\begin{gathered}
+  \left[ {\begin{array}{*{20}{c}}
+  {{a_{11}}}&{{a_{21}}}&{{a_{31}}}&{{a_{41}}}&{{a_{51}}} \\ 
+  0&{{a_{22}}}&{{a_{32}}}&{{a_{42}}}&{{a_{52}}} \\ 
+  0&0&{{a_{33}}}&{{a_{43}}}&{{a_{53}}} \\ 
+  0&0&0&{{a_{44}}}&{{a_{54}}} \\ 
+  0&0&0&0&{{a_{55}}} 
+\end{array}} \right]\left[ {\begin{array}{*{20}{c}}
+  {{a_{11}}}&0&0&0&0 \\ 
+  {{a_{21}}}&{{a_{22}}}&0&0&0 \\ 
+  {{a_{31}}}&{{a_{32}}}&{{a_{33}}}&0&0 \\ 
+  {{a_{41}}}&{{a_{42}}}&{{a_{43}}}&{{a_{44}}}&0 \\ 
+  {{a_{51}}}&{{a_{52}}}&{{a_{53}}}&{{a_{54}}}&{{a_{55}}} 
+\end{array}} \right] \hfill \\
+   = \left[ {\begin{array}{*{20}{c}}
+  {a_{11}^2 + a_{21}^2 + a_{31}^2 + a_{41}^2 + a_{51}^2}&{}&{}&{}&{} \\ 
+  {{a_{22}}{a_{21}} + {a_{32}}{a_{31}} + {a_{42}}{a_{41}} + {a_{52}}{a_{51}}}&{a_{22}^2 + a_{32}^2 + a_{42}^2 + a_{52}^2}&{}&{}&{} \\ 
+  {{a_{33}}{a_{31}} + {a_{43}}{a_{41}} + {a_{53}}{a_{51}}}&{{a_{33}}{a_{32}} + {a_{43}}{a_{42}} + {a_{53}}{a_{52}}}&{a_{33}^2 + a_{43}^2 + a_{53}^2}&{}&{} \\ 
+  {{a_{44}}{a_{41}} + {a_{54}}{a_{51}}}&{{a_{44}}{a_{42}} + {a_{54}}{a_{52}}}&{{a_{44}}{a_{43}} + {a_{54}}{a_{53}}}&{a_{44}^2 + a_{54}^2}&{} \\ 
+  {{a_{55}}{a_{51}}}&{{a_{55}}{a_{52}}}&{{a_{55}}{a_{53}}}&{{a_{55}}{a_{54}}}&{a_{55}^2} 
+\end{array}} \right] \hfill \\ 
+\end{gathered} \]
+
+
+
+### What patterns of zeros in $L$ carry over to $V$?
+
+Conjecture:
+
+1. Any pattern of zeros in which each column of zeros extends to the bottom row. Thus any subdiagonal rectangular block or a subdiagonal L-shape that extends to the bottom row will reproduce in the variance matrix.
+2. Two zeros (or blocks of zeros) in the first sub-diagonal (or first subdiagonal partition).
+
+### Models for categorical factors
+
+Consider a random effects model with a 3-level categorical factor, $F$, taking the values 0,1 and 2, and a continuous variable, $x$. The random effect assuming independence between the random effect associated with $F$ and that associated with $X$, can be written as:
+
+$$
+\delta = u_0 + f_1 u_1 + f_2 u_2 + x u_3
+$$
+where
+$f_1 = I_{F=1}$, $f_2 = I_{F=2}$, and
+
+\[\operatorname{Var} \left( {\begin{array}{*{20}{c}}
+  {{u_0}} \\ 
+  {{u_1}} \\ 
+  {{u_3}} \\ 
+  {{u_4}} 
+\end{array}} \right) = \left[ {\begin{array}{*{20}{c}}
+  {{g_{00}}}&{{g_{01}}}&{{g_{02}}}&{{g_{03}}} \\ 
+  {{g_{10}}}&{{g_{11}}}&{{g_{12}}}&0 \\ 
+  {{g_{20}}}&{{g_{21}}}&{{g_{22}}}&0 \\ 
+  {{g_{30}}}&0&0&{{g_{33}}} 
+\end{array}} \right]\]
+
+Questions to explore are verifying the coding and location invariance of the model.
+
+\[\begin{gathered}
+  \operatorname{var} (\delta |F = 0) = {g_{00}} + 2{g_{03}}x + {g_{33}}{x^2} \hfill \\
+  \operatorname{var} (\delta |F = 1) = {g_{00}} + 2{g_{01}} + {g_{11}} + 2{g_{03}}x + {g_{33}}{x^2} \hfill \\
+  \operatorname{var} (\delta |F = 2) = {g_{00}} + 2{g_{02}} + {g_{22}} + 2{g_{03}}x + {g_{33}}{x^2} \hfill \\
+  \operatorname{cov} (\delta |F = 0,\delta |F = 1) = {g_{00}} + {g_{01}} + 2{g_{03}}x + {g_{33}}{x^2} \hfill \\
+  \operatorname{cov} (\delta |F = 2,\delta |F = 1) = {g_{00}} + {g_{01}} + {g_{20}} + {g_{21}} + 2{g_{03}}x + {g_{33}}{x^2} \hfill \\ 
+\end{gathered} \]
+
+From this we see the following variance properties for $\delta$:
+\[\begin{gathered}
+  \operatorname{var} (\delta |F = 0) = {g_{00}} + 2{g_{03}}x + {g_{33}}{x^2} \hfill \\
+  \operatorname{var} (\delta |F = 1) = {g_{00}} + 2{g_{01}} + {g_{11}} + 2{g_{03}}x + {g_{33}}{x^2} \hfill \\
+  \operatorname{var} (\delta |F = 2) = {g_{00}} + 2{g_{02}} + {g_{22}} + 2{g_{03}}x + {g_{33}}{x^2} \hfill \\
+  \operatorname{cov} (\delta |F = 0,\delta |F = 1) = {g_{00}} + {g_{01}} + 2{g_{03}}x + {g_{33}}{x^2} \hfill \\
+  \operatorname{cov} (\delta |F = 1,\delta |F = 1) = {g_{00}} + {g_{01}} + {g_{20}} + {g_{21}} + 2{g_{03}}x + {g_{33}}{x^2} \hfill \\ 
+\end{gathered} \]
+
+
+
 
 ## Variance Factorizations
 
